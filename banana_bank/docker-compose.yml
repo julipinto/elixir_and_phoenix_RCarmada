@@ -12,4 +12,4 @@ services:
     ports:
       - '5432:5432'  # Mapeia a porta 5432 do contêiner para a porta 5432 do host
     volumes:
-      - ./data:/var/lib/postgresql/data 
+      - ~/projects/data:/var/lib/postgresql/data 
