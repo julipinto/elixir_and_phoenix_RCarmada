@@ -1,0 +1,15 @@
+version: '3.8'  # Versão do Docker Compose
+
+services:
+  postgres:
+    image: postgres:latest 
+    container_name: postgres  # Nome do contêiner
+    restart: always  # Reinicia o contêiner automaticamente em caso de falha
+    environment:
+      - POSTGRES_USER=postgres  # Substitua 'seu_usuario' pelo nome de usuário desejado
+      - POSTGRES_PASSWORD=postgres  # Substitua 'sua_senha' pela senha desejada
+      - POSTGRES_DB=banana_bank  # (Opcional) Cria um banco de dados com o nome especificado
+    ports:
+      - '5432:5432'  # Mapeia a porta 5432 do contêiner para a porta 5432 do host
+    volumes:
+      - ./data:/var/lib/postgresql/data 
