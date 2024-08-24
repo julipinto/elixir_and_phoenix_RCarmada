@@ -4,7 +4,8 @@ defmodule BananaBank.Users.User do
 
   alias Ecto.Changeset
 
-  @fields ~w(name password password_hash email cep)a
+  # @fields ~w(name password password_hash email cep)a
+  @required_fields ~w(name password email cep)a
 
   schema "users" do
     field :name, :string
@@ -19,8 +20,8 @@ defmodule BananaBank.Users.User do
   @doc false
   def changeset(user \\ %__MODULE__{}, attrs) do
     user
-    |> cast(attrs, @fields -- [:password_hash])
-    |> validate_required(@fields -- [:password_hash])
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
     |> validate_length(:name, min: 3)
     |> validate_length(:cep, min: 8)
     |> validate_format(:email, ~r/@/)

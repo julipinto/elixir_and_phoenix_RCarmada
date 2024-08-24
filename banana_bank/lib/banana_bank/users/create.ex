@@ -4,7 +4,7 @@ defmodule BananaBank.Users.Create do
 
   def call(attrs) do
     attrs
-    |> User.changeset(attrs)
+    |> User.changeset()
     |> Repo.insert()
   end
 end
