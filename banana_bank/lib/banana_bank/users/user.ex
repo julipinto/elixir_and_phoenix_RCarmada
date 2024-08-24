@@ -4,9 +4,9 @@ defmodule BananaBank.Users.User do
 
   alias Ecto.Changeset
 
-  # @fields ~w(name password password_hash email cep)a
   @required_fields ~w(name password email cep)a
-
+  
+  @derive {Jason.Encoder, only: [:id, :name, :email, :cep]}
   schema "users" do
     field :name, :string
     field :password_hash, :string
