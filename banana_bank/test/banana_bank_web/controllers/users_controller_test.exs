@@ -1,12 +1,18 @@
 defmodule BananaBankWeb.UsersControllerTest do
   use BananaBankWeb.ConnCase
 
+  import Mox
+
   alias BananaBank.Users
   alias Users.User
+
+  setup :verify_on_exit!
 
   describe "create/2" do
     test "creates a user", %{conn: conn} do
       params = %{name: "John Doe", email: "john@example", cep: "12345678", password: "123456"}
+
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
 
       response =
         conn
@@ -27,6 +33,8 @@ defmodule BananaBankWeb.UsersControllerTest do
     test "returns an error when the params are invalid", %{conn: conn} do
       params = %{name: "John Doe", email: "john@example", cep: "1234567"}
 
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
+
       response =
         conn
         |> post("/api/users", params)
@@ -43,7 +51,9 @@ defmodule BananaBankWeb.UsersControllerTest do
 
   describe "delete/2" do
     test "deletes a user", %{conn: conn} do
-      {:ok, %User{} = user} = Users.create(%{name: "John Doe", email: "john@example", cep: "12345678", password: "123456"})
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
+      
+      {:ok, %User{} = user} = Users.create(%{"name" => "John Doe", "email" => "john@example", "cep" => "12345678", "password" => "123456"})
 
       response =
         conn
@@ -65,7 +75,9 @@ defmodule BananaBankWeb.UsersControllerTest do
 
   describe "show/2" do
     test "returns a user", %{conn: conn} do
-      {:ok, %User{} = user} = Users.create(%{name: "John Doe", email: "john@example", cep: "12345678", password: "123456"})
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
+
+      {:ok, %User{} = user} = Users.create(%{"name" => "John Doe", "email" => "john@example", "cep" => "12345678", "password" => "123456"})
 
       response =
         conn
@@ -94,7 +106,9 @@ defmodule BananaBankWeb.UsersControllerTest do
 
   describe "update/3" do
     test "updates a user", %{conn: conn} do
-      {:ok, %User{} = user} = Users.create(%{name: "John Doe", email: "john@example", cep: "12345678", password: "123456"})
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
+
+      {:ok, %User{} = user} = Users.create(%{"name" => "John Doe", "email" => "john@example", "cep" => "12345678", "password" => "123456"})
 
       params = %{name: "Jane Doe", email: "jane@example", cep: "87654321", password: "654321"}
 
@@ -124,7 +138,9 @@ defmodule BananaBankWeb.UsersControllerTest do
     end
 
     test "returns an error when the params are invalid", %{conn: conn} do
-      {:ok, %User{} = user} = Users.create(%{name: "John Doe", email: "john@example", cep: "12345678", password: "123456"})
+      expect(BananaBank.HTTP.ViaCep.ClientMock, :call, fn _cep -> {:ok, %{"cep" => "12345678"}} end)
+
+      {:ok, %User{} = user} = Users.create(%{"name" => "John Doe", "email" => "john@example", "cep" => "12345678", "password" => "123456"})
 
       response =
         conn

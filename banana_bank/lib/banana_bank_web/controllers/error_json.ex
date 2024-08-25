@@ -26,6 +26,13 @@ defmodule BananaBankWeb.ErrorJSON do
     }
   end
 
+  def error(%{status: status}) do
+    %{
+      status: status,
+      message: "Resource not found"
+    }
+  end
+
   def error(%{changeset: changeset}) do
     %{errors: Ecto.Changeset.traverse_errors(changeset, &translate_errors/1)}
   end
